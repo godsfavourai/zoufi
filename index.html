@@ -4,471 +4,515 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Welcome to Patras | Your Digital Concierge</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
-    /* ========================================================
-       Modern Boutique UI — clean, professional, accessible
-       Design tokens + restrained motion + minimal ornament
-       Fonts: Sora (display), Inter (text)
-       ======================================================== */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;500;600;700&display=swap');
+    /* ====== Mobile-First Design System ====== */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    
+    :root{
+      --primary:#6366f1; --primary-dark:#4f46e5; --secondary:#8b5cf6; --accent:#06b6d4;
+      --success:#10b981; --warning:#f59e0b; --error:#ef4444;
 
-    :root {
-      /* Color system */
-      --bg: #0b0c0e;          /* page background */
-      --surface: #101214;     /* card bg */
-      --surface-2: #0f1113;   /* deeper panels */
-      --elev: 0 10px 24px rgba(0,0,0,.35);
-      --elev-2: 0 14px 40px rgba(0,0,0,.45);
+      --bg-primary:#0f0f23; --bg-secondary:#1a1a2e;
+      --bg-card:rgba(255,255,255,.03); --bg-glass:rgba(255,255,255,.08);
 
-      --text: #f6f7f9;        /* primary text */
-      --muted: #9aa3ad;       /* secondary text */
+      --text-primary:#fff; --text-secondary:#a1a1aa; --text-accent:#d4d4d8;
 
-      /* Accent — modern warm brass */
-      --accent: #d4b06a;
-      --accent-600: #b89355;
-      --accent-200: #f1e3c1;
+      --border:rgba(255,255,255,.1); --border-hover:rgba(255,255,255,.2);
 
-      /* Borders */
-      --stroke: rgba(255,255,255,0.08);
-      --hairline: rgba(255,255,255,0.06);
+      --shadow-sm:0 4px 6px -1px rgba(0,0,0,.3);
+      --shadow-md:0 10px 15px -3px rgba(0,0,0,.4);
+      --shadow-lg:0 25px 50px -12px rgba(0,0,0,.6);
+      --shadow-glow:0 0 20px rgba(99,102,241,.3);
 
-      /* Radii & spacing */
-      --radius: 16px;
-      --radius-lg: 20px;
-      --gap-1: 8px;
-      --gap-2: 12px;
-      --gap-3: 16px;
-      --gap-4: 20px;
-      --gap-5: 28px;
-      --gap-6: 40px;
-
-      /* Typography */
-      --display: 'Sora', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      --text-face: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      --blur:blur(16px);
+      --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:20px;
+      
+      /* Mobile-first spacing */
+      --space-xs:8px; --space-sm:16px; --space-md:24px; --space-lg:32px; --space-xl:48px;
+    }
+    
+    body{
+      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      background:linear-gradient(135deg,var(--bg-primary) 0%,var(--bg-secondary) 100%);
+      color:var(--text-primary); 
+      line-height:1.6; 
+      min-height:100vh; 
+      overflow-x:hidden;
+      font-size:16px; /* Ensure 16px+ for mobile accessibility */
     }
 
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      font-family: var(--text-face);
-      background: radial-gradient(1200px 600px at 85% -10%, rgba(212,176,106,0.06), transparent 55%),
-                  radial-gradient(1000px 600px at 10% 110%, rgba(241,227,193,0.05), transparent 60%),
-                  var(--bg);
-      color: var(--text);
-      line-height: 1.65;
+    /* Mobile-first background orbs */
+    .bg-decoration{
+      position:fixed; inset:0; pointer-events:none; z-index:-1; overflow:hidden;
+    }
+    .bg-decoration::before,.bg-decoration::after{
+      content:""; position:absolute; border-radius:50%; opacity:.08; animation:float 8s ease-in-out infinite;
+    }
+    .bg-decoration::before{
+      top:5%; right:5%; width:200px; height:200px;
+      background:radial-gradient(circle,var(--primary),transparent 70%);
+    }
+    .bg-decoration::after{
+      bottom:5%; left:5%; width:150px; height:150px;
+      background:radial-gradient(circle,var(--secondary),transparent 70%); animation-direction:reverse;
     }
 
-    /* Prefer reduced motion */
+    /* Mobile-first header */
+    .header{ position:relative; padding:var(--space-lg) 0 var(--space-xl); text-align:center; overflow:hidden; }
+    .header-bg{ position:absolute; inset:0; border-radius:0 0 24px 24px; opacity:.12;
+      background:linear-gradient(135deg,var(--primary),var(--secondary) 50%,var(--accent)); }
+    
+    /* Mobile-first container */
+    .container{ max-width:100%; margin:0 auto; padding:0 var(--space-sm); position:relative; z-index:1; }
+    
+    /* Mobile-first typography */
+    h1.hero{
+      font-size:2rem; font-weight:800; letter-spacing:-.02em; margin:0 0 var(--space-sm);
+      background:linear-gradient(135deg,var(--text-primary),var(--primary));
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+      animation:slideUp 1s ease-out; line-height:1.2;
+    }
+    .subtitle{
+      font-size:1rem; color:var(--text-secondary); margin-bottom:var(--space-md);
+      animation:slideUp 1s ease-out .15s both; line-height:1.5; max-width:90%; margin-left:auto; margin-right:auto;
+    }
+    .welcome-badge{
+      display:inline-flex; align-items:center; gap:var(--space-xs);
+      background:var(--bg-glass); backdrop-filter:var(--blur); border:1px solid var(--border);
+      padding:12px var(--space-sm); border-radius:var(--r-xl); font-weight:600; font-size:0.9rem; color:var(--text-accent);
+      animation:slideUp 1s ease-out .3s both; transition:.3s; min-height:44px;
+    }
+    .welcome-badge:hover{ transform:translateY(-2px); box-shadow:var(--shadow-glow); border-color:var(--border-hover); }
+
+    /* Mobile-first language switch */
+    .lang{
+      position:absolute; top:var(--space-sm); right:var(--space-sm);
+      display:inline-flex; gap:4px; padding:4px; background:var(--bg-glass); border:1px solid var(--border);
+      border-radius:999px; backdrop-filter:var(--blur);
+    }
+    .lang button{
+      border:1px solid transparent; background:transparent; color:var(--text-accent); font-weight:700; font-size:0.8rem;
+      letter-spacing:.3px; padding:8px 10px; border-radius:999px; cursor:pointer; min-width:40px; min-height:40px; transition:.2s;
+    }
+    .lang button[aria-pressed="true"]{ background:linear-gradient(135deg,var(--primary),var(--secondary)); color:#0b1020; }
+
+    /* Mobile-first sticky nav */
+    nav.nav{ position:sticky; top:var(--space-sm); z-index:5; margin:-var(--space-md) 0 var(--space-lg); }
+    .nav-box{ background:var(--bg-glass); backdrop-filter:var(--blur); border:1px solid var(--border);
+      border-radius:var(--r-lg); padding:var(--space-sm); margin:0 var(--space-sm); }
+    .nav-grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:var(--space-xs); }
+    .nav-item{
+      display:flex; flex-direction:column; align-items:center; gap:4px; padding:var(--space-sm) var(--space-xs);
+      background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-md);
+      text-decoration:none; color:var(--text-accent); font-weight:600; font-size:0.85rem; transition:.3s;
+      min-height:60px; text-align:center;
+    }
+    .nav-item:hover, .nav-item:focus{ transform:translateY(-2px); background:var(--bg-glass); border-color:var(--primary); box-shadow:var(--shadow-glow); }
+
+    /* Mobile-first sections */
+    section.section{ padding:var(--space-xl) 0; }
+    .section-header{ text-align:center; margin-bottom:var(--space-lg); padding:0 var(--space-sm); }
+    .section-title{
+      font-size:1.75rem; font-weight:800; letter-spacing:-.02em; margin-bottom:var(--space-xs);
+      background:linear-gradient(135deg,var(--text-primary),var(--primary)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; line-height:1.3;
+    }
+    .section-sub{ color:var(--text-secondary); font-size:0.95rem; line-height:1.6; max-width:100%; }
+
+    /* Mobile-first cards */
+    .grid{ display:grid; gap:var(--space-sm); padding:0 var(--space-sm); }
+    .grid.cards-2{ grid-template-columns:1fr; }
+    .grid.cards-3{ grid-template-columns:1fr; }
+    .card{
+      background:var(--bg-glass); backdrop-filter:var(--blur); border:1px solid var(--border); border-radius:var(--r-lg);
+      padding:var(--space-md); transition:.35s; position:relative; overflow:hidden;
+    }
+    .card:hover, .card:focus-within{ transform:translateY(-3px); border-color:var(--primary); box-shadow:var(--shadow-lg),var(--shadow-glow); }
+    .card h3{ font-size:1.1rem; margin:0 0 var(--space-xs); line-height:1.4; }
+    .muted{ color:var(--text-secondary); font-size:0.9rem; line-height:1.5; }
+    
+    /* Mobile-first info lists */
+    .info-list{ list-style:none; }
+    .info-item{
+      display:flex; justify-content:space-between; align-items:flex-start; gap:var(--space-sm);
+      padding:var(--space-xs) 0; border-bottom:1px solid var(--border); flex-wrap:wrap;
+    }
+    .info-item:last-child{ border-bottom:none; }
+    .info-label{ font-weight:700; color:var(--text-accent); font-size:0.9rem; flex-shrink:0; }
+    .info-val{ color:var(--text-secondary); font-size:0.9rem; text-align:right; }
+    .info-val.ok{ color:var(--success); font-weight:700; }
+
+    /* Mobile-first emergency block */
+    .emergency{
+      background:linear-gradient(135deg,var(--error),#dc2626); border-radius:var(--r-lg);
+      padding:var(--space-lg); text-align:center; margin:var(--space-lg) var(--space-sm) 0;
+    }
+    .em-grid{ display:grid; grid-template-columns:1fr 1fr; gap:var(--space-sm); margin-top:var(--space-md); }
+    .em-item{ background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.25); border-radius:var(--r-md); padding:var(--space-sm); }
+    .em-num{ font-size:1.2rem; font-weight:800; margin-top:4px; }
+
+    /* Mobile-first weather */
+    .weather-card .temp{ font-size:1.8rem; font-weight:800; }
+    .weather-meta{ color:var(--text-secondary); }
+
+    /* Mobile-first tabs */
+    .tablist{
+      display:flex; gap:var(--space-xs); flex-wrap:wrap; border:1px solid var(--border);
+      border-radius:var(--r-md); padding:6px; background:var(--bg-card); margin:0 var(--space-sm); justify-content:center;
+    }
+    .tablist button{
+      border:1px solid transparent; background:transparent; color:var(--text-accent);
+      padding:10px 12px; border-radius:var(--r-sm); font-weight:700; font-size:0.85rem; cursor:pointer; transition:.2s; min-height:44px; white-space:nowrap;
+    }
+    .tablist button[aria-selected="true"]{ background:linear-gradient(135deg,var(--primary),var(--secondary)); color:#0b1020; }
+    .tabpanel{ display:none; margin-top:var(--space-md); }
+    .tabpanel[data-active="true"]{ display:block; }
+
+    /* Mobile-first footer */
+    footer.footer{
+      background:var(--bg-secondary); border-top:1px solid var(--border); padding:var(--space-xl) 0 var(--space-lg);
+      margin-top:var(--space-xl); text-align:center;
+    }
+    .footer-bottom{ border-top:1px solid var(--border); margin-top:var(--space-md); padding-top:var(--space-md);
+      color:var(--text-secondary); font-size:0.85rem; }
+
+    /* Mobile-first animations */
+    .fade-in{ opacity:0; transform:translateY(20px); transition:all .6s cubic-bezier(.4,0,.2,1); }
+    .fade-in.visible{ opacity:1; transform:translateY(0); }
+    @keyframes slideUp{ from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes float{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+    /* ====== TABLET BREAKPOINT (min-width: 768px) ====== */
+    @media (min-width: 768px) {
+      .container{ padding:0 var(--space-lg); }
+      h1.hero{ font-size:2.5rem; }
+      .subtitle{ font-size:1.1rem; }
+      .section-title{ font-size:2rem; }
+      .nav-grid{ grid-template-columns:repeat(3, 1fr); }
+      .grid.cards-2{ grid-template-columns:repeat(2, 1fr); }
+      .grid.cards-3{ grid-template-columns:repeat(2, 1fr); }
+      .em-grid{ grid-template-columns:repeat(2, 1fr); gap:var(--space-md); }
+      .tablist{ justify-content:flex-start; }
+      .bg-decoration::before{ width:280px; height:280px; opacity:.1; }
+      .bg-decoration::after{ width:200px; height:200px; opacity:.1; }
+    }
+
+    /* ====== DESKTOP BREAKPOINT (min-width: 1024px) ====== */
+    @media (min-width: 1024px) {
+      :root{ --r-sm:12px; --r-md:16px; --r-lg:24px; --r-xl:32px; }
+      .container{ max-width:1200px; padding:0 var(--space-xl); }
+      h1.hero{ font-size:3.5rem; }
+      .subtitle{ font-size:1.25rem; max-width:70%; }
+      .section-title{ font-size:2.4rem; }
+      .header{ padding:var(--space-xl) 0 calc(var(--space-xl) * 1.5); }
+      .nav-grid{ grid-template-columns:repeat(5, 1fr); gap:var(--space-sm); }
+      nav.nav{ margin:-var(--space-xl) 0 var(--space-xl); }
+      .nav-box{ padding:var(--space-md); }
+      .nav-item{ padding:var(--space-md) var(--space-sm); font-size:0.9rem; min-height:80px; }
+      .grid.cards-2{ grid-template-columns:repeat(2, 1fr); gap:var(--space-lg); }
+      .grid.cards-3{ grid-template-columns:repeat(3, 1fr); gap:var(--space-lg); }
+      .grid{ gap:var(--space-lg); }
+      .card{ padding:var(--space-lg); }
+      .card:hover{ transform:translateY(-6px); }
+      .emergency{ padding:var(--space-xl); }
+      .em-grid{ grid-template-columns:repeat(4, 1fr); }
+      .em-num{ font-size:1.35rem; }
+      .section{ padding:calc(var(--space-xl) * 1.5) 0; }
+      .section-header{ margin-bottom:var(--space-xl); }
+      .section-sub{ max-width:640px; margin:0 auto; }
+      .bg-decoration::before{ width:320px; height:320px; opacity:.12; }
+      .bg-decoration::after{ width:220px; height:220px; opacity:.12; }
+      .weather-card .temp{ font-size:2.2rem; }
+    }
+
+    /* ====== LARGE DESKTOP (min-width: 1280px) ====== */
+    @media (min-width: 1280px) {
+      h1.hero{ font-size:4.2rem; }
+      .subtitle{ font-size:1.35rem; }
+      .section-title{ font-size:2.6rem; }
+    }
+
+    /* ====== ACCESSIBILITY IMPROVEMENTS ====== */
     @media (prefers-reduced-motion: reduce) {
-      * { animation: none !important; transition: none !important; }
+      *,*::before,*::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+      .bg-decoration::before, .bg-decoration::after { animation: none; }
     }
-
-    /* Layout */
-    .wrap { max-width: 1120px; margin: 0 auto; padding: 24px; }
-
-    /* Header */
-    header {
-      position: sticky; top: 0; z-index: 10;
-      backdrop-filter: saturate(1.1) blur(8px);
-      background: linear-gradient(to bottom, rgba(11,12,14,.75), rgba(11,12,14,.4));
-      border-bottom: 1px solid var(--hairline);
+    button:focus-visible, a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+    @media (prefers-contrast: high) {
+      :root { --border: rgba(255,255,255,.3); --bg-glass: rgba(255,255,255,.15); }
     }
-    .bar { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
-    .brand { display: flex; align-items: center; gap: var(--gap-2); }
-    .mark { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--accent-600), var(--accent) 60%, var(--accent-200)); border: 1px solid rgba(255,255,255,.15); box-shadow: inset 0 1px 0 rgba(255,255,255,.12); }
-    .title { font-family: var(--display); font-weight: 700; letter-spacing: .2px; font-size: 1.05rem; }
-    .meta { color: var(--muted); font-size: .95rem; }
-
-    /* Language switch (segmented) */
-    .seg { display: inline-flex; padding: 4px; gap: 4px; background: #0e1012; border: 1px solid var(--stroke); border-radius: 999px; }
-    .seg button { font: 700 .85rem var(--text-face); letter-spacing: .3px; padding: 8px 14px; border-radius: 999px; border: 1px solid transparent; background: transparent; color: var(--muted); cursor: pointer; }
-    .seg button[aria-pressed="true"] { background: linear-gradient(135deg, var(--accent-600), var(--accent)); color: #0c0b09; }
-
-    /* Hero */
-    .hero { padding: 56px 0 24px; }
-    .hero h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2.4rem, 6vw, 3.6rem); letter-spacing: .2px; margin: 0 0 10px; }
-    .hero p { color: var(--muted); font-size: 1.05rem; margin: 0 0 var(--gap-3); }
-
-    .badge { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--stroke); border-radius: 999px; padding: 10px 16px; background: #0e1012; color: var(--muted); font-weight: 600; }
-
-    /* Section block */
-    .block { background: var(--surface); border: 1px solid var(--stroke); border-radius: var(--radius-lg); padding: 28px; margin: var(--gap-5) 0; box-shadow: var(--elev); }
-    .block h2 { display: flex; align-items: center; gap: 12px; font-family: var(--display); font-size: 1.6rem; font-weight: 600; margin: 0 0 18px; }
-    .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(212,176,106, .12); }
-
-    /* Grid */
-    .grid { display: grid; gap: var(--gap-3); }
-    .grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-    .grid.cols-3 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-    .grid.cols-4 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
-
-    /* Card */
-    .card { border: 1px solid var(--hairline); background: var(--surface-2); border-radius: 14px; padding: 18px; }
-    .card h3 { display: flex; align-items: center; gap: 10px; font-weight: 600; margin: 0 0 8px; font-size: 1.05rem; }
-    .card p { color: var(--muted); margin: 0; }
-
-    /* Inline icons (stroke) */
-    .icon { width: 18px; height: 18px; color: var(--accent); }
-    .icon-muted { color: var(--muted); }
-
-    /* WiFi strip */
-    .wifi { display: grid; grid-template-columns: 1fr auto; gap: var(--gap-3); align-items: center; border: 1px dashed var(--stroke); background: #0e1012; border-radius: 14px; padding: 16px 18px; }
-    .wifi .ssid { font-family: var(--display); font-weight: 600; letter-spacing: .25px; }
-    .wifi .pwd { font-family: var(--text-face); font-weight: 800; letter-spacing: 3px; padding: 8px 10px; border: 1px solid var(--stroke); border-radius: 10px; background: var(--surface); }
-
-    /* Tabs (accessible segmented tabs) */
-    .tabs { display: flex; flex-direction: column; gap: var(--gap-3); }
-    .tablist { display: inline-flex; gap: 6px; flex-wrap: wrap; border: 1px solid var(--stroke); border-radius: 12px; padding: 6px; background: #0e1012; }
-    .tablist button { border: 1px solid transparent; background: transparent; color: var(--muted); padding: 10px 14px; border-radius: 10px; font-weight: 700; letter-spacing: .3px; cursor: pointer; }
-    .tablist button[aria-selected="true"] { background: linear-gradient(135deg, var(--accent-600), var(--accent)); color: #0c0b09; }
-    .tabpanel { display: none; }
-    .tabpanel[data-active="true"] { display: block; }
-
-    /* Weather */
-    .weather { display: grid; grid-template-columns: auto 1fr; gap: var(--gap-3); align-items: center; border: 1px solid var(--stroke); background: var(--surface-2); border-radius: 14px; padding: 16px 18px; }
-    .temp { font-family: var(--display); font-size: 2.2rem; font-weight: 700; letter-spacing: .3px; }
-    .weather .meta { color: var(--muted); }
-
-    /* Contact */
-    .contact { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--gap-3); }
-    .contact .row { border: 1px solid var(--hairline); background: var(--surface-2); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
-
-    /* Footer spacing */
-    footer { height: 40px; }
-
-    /* Mobile tweaks */
-    @media (max-width: 768px){ .hero { padding-top: 36px; } }
   </style>
 </head>
 <body>
-  <header>
-    <div class="wrap bar" role="navigation" aria-label="Top bar">
-      <div class="brand">
-        <div class="mark" aria-hidden="true"></div>
-        <div>
-          <div class="title">Zoufis cozy living</div>
-          <div class="meta" data-i18n="hero.location">Patras, Western Greece</div>
-        </div>
-      </div>
-      <div class="seg" role="group" aria-label="Language">
+  <div class="bg-decoration"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-bg"></div>
+    <div class="container">
+      <!-- Language switch -->
+      <div class="lang" role="group" aria-label="Language">
         <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
         <button type="button" data-set-lang="gr" aria-pressed="false">GR</button>
       </div>
+
+      <h1 class="hero" data-i18n="hero.title">Welcome to Patras</h1>
+      <p class="subtitle" data-i18n="hero.subtitle">Your stay, perfected</p>
+      <div class="welcome-badge">✨ <span data-i18n="hero.location">Patras, Western Greece</span></div>
     </div>
   </header>
 
-  <main class="wrap">
-    <!-- Hero -->
-    <section class="hero" aria-labelledby="hero-title">
-      <h1 id="hero-title" data-i18n="hero.title">Welcome to Patras</h1>
-      <p data-i18n="hero.subtitle">Your stay, perfected</p>
-      <div class="badge"><span class="icon-muted" aria-hidden="true">📍</span><span data-i18n="hero.location">Patras, Western Greece</span></div>
-    </section>
+  <!-- Sticky quick nav -->
+  <nav class="nav">
+    <div class="nav-box">
+      <div class="nav-grid">
+        <a class="nav-item" href="#essentials">🗝️ <span data-i18n="nav.essentials">Essentials</span></a>
+        <a class="nav-item" href="#weather">🌤️ <span data-i18n="nav.weather">Weather</span></a>
+        <a class="nav-item" href="#discover">🗺️ <span data-i18n="nav.discover">Discover</span></a>
+        <a class="nav-item" href="#emergency">🚨 <span data-i18n="nav.emergency">Emergency</span></a>
+        <a class="nav-item" href="#contact">✉️ <span data-i18n="nav.contact">Contact</span></a>
+      </div>
+    </div>
+  </nav>
 
-    <!-- Emergency -->
-    <section class="block" aria-labelledby="emergency-title">
-      <h2 id="emergency-title"><span class="dot" aria-hidden="true"></span><span data-i18n="emergency.title">Emergency Contacts</span></h2>
-      <div class="grid cols-4">
+  <!-- Essentials -->
+  <section id="essentials" class="section fade-in">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" data-i18n="apt.title">Apartment Essentials</h2>
+        <p class="section-sub muted" data-i18n="apt.sub">Key info for a smooth stay.</p>
+      </div>
+
+      <div class="grid cards-2">
         <div class="card">
-          <h3>
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 15.5V9.5a2 2 0 0 1 2-2h3l2-2h4l2 2h3a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M12 10v6"/><path d="M9 13h6"/></svg>
-            <span data-i18n="emergency.emergency">Emergency</span>
-          </h3>
-          <p><strong>112</strong></p>
+          <h3 data-i18n="apt.access">Access</h3>
+          <p class="muted" data-i18n="apt.accessDesc"><strong>Check-in:</strong> After 3:00 PM<br><strong>Check-out:</strong> Before 11:00 AM<br><strong>Lockbox Code:</strong> 1234</p>
         </div>
         <div class="card">
-          <h3>
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 6v9a2 2 0 0 1-2 2h-4v-6H10v6H6a2 2 0 0 1-2-2V9l8-6Z"/></svg>
-            <span data-i18n="emergency.police">Police</span>
-          </h3>
-          <p><strong>100</strong></p>
-        </div>
-        <div class="card">
-          <h3>
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>
-            <span data-i18n="emergency.fire">Fire Dept</span>
-          </h3>
-          <p><strong>199</strong></p>
-        </div>
-        <div class="card">
-          <h3>
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
-            <span data-i18n="emergency.hospital">Hospital</span>
-          </h3>
-          <p data-i18n="emergency.hospitalDesc">University Hospital<br><strong>2613 603 000</strong></p>
+          <h3 data-i18n="apt.rules">House Rules</h3>
+          <ul class="info-list">
+            <li class="info-item"><span class="info-label" data-i18n="apt.ruleQuiet">Quiet hours</span><span class="info-val">10 PM – 8 AM</span></li>
+            <li class="info-item"><span class="info-label" data-i18n="apt.ruleSmoke">Smoking</span><span class="info-val">❌ Indoor / ✅ Balcony</span></li>
+            <li class="info-item"><span class="info-label" data-i18n="apt.ruleGuests">Max guests</span><span class="info-val">4</span></li>
+          </ul>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Apartment essentials -->
-    <section class="block" aria-labelledby="apt-title">
-      <h2 id="apt-title"><span class="dot" aria-hidden="true"></span><span data-i18n="apt.title">Apartment Essentials</span></h2>
-      <!-- <div class="wifi" role="group" aria-label="WiFi">
-        <div>
-          <div class="meta" data-i18n="apt.wifiLabel">WiFi Password:</div>
-          <div class="pwd">WelcomeHome123!</div>
-        </div>
-        <div class="ssid">PatrasGuest2025</div>
-      </div> -->
-      <div class="grid cols-2" style="margin-top: var(--gap-3)">
-        <div class="card">
-          <h3>
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg>
-            <span data-i18n="apt.access">Access</span>
-          </h3>
-          <p data-i18n="apt.accessDesc"><strong>Check-in:</strong> After 3:00 PM<br><strong>Check-out:</strong> Before 11:00 AM<br><strong>Lockbox Code:</strong> 1234</p>
-        </div>
-        <div class="card">
-          <h3>
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 11V7a4 4 0 1 1 8 0v4"/><rect x="5" y="11" width="14" height="10" rx="2"/></svg>
-            <span data-i18n="apt.rules">House Rules</span>
-          </h3>
-          <p data-i18n="apt.rulesDesc"><strong>Quiet hours:</strong> 10 PM - 8 AM<br><strong>No smoking</strong> inside<br><strong>Max guests:</strong> 4 people</p>
-        </div>
+  <!-- Weather -->
+  <section id="weather" class="section fade-in">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" data-i18n="weather.title">Today's Weather</h2>
+        <p class="section-sub muted" data-i18n="weather.sub">Live conditions for Patras.</p>
       </div>
-    </section>
 
-    <!-- Weather -->
-    <section class="block" aria-labelledby="weather-title">
-      <h2 id="weather-title"><span class="dot" aria-hidden="true"></span><span data-i18n="weather.title">Today's Weather</span></h2>
-      <div class="weather">
-        <div class="temp">—</div>
-        <div>
-          <div class="meta" data-i18n="weather.line">—</div>
-          <div class="meta" data-i18n="weather.sun">—</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Discover -->
-    <section class="block" aria-labelledby="discover-title">
-      <h2 id="discover-title"><span class="dot" aria-hidden="true"></span><span data-i18n="discover.title">Discover Patras</span></h2>
-      <div class="tabs">
-        <div class="tablist" role="tablist" aria-label="Discover tabs">
-          <button role="tab" aria-selected="true" aria-controls="tab-attractions" id="tabbtn-attractions">Must‑See</button>
-          <button role="tab" aria-selected="false" aria-controls="tab-food" id="tabbtn-food">Food & Drinks</button>
-          <button role="tab" aria-selected="false" aria-controls="tab-practical" id="tabbtn-practical">Essentials</button>
-          <button role="tab" aria-selected="false" aria-controls="tab-transport" id="tabbtn-transport">Getting Around</button>
-        </div>
-
-        <div id="tab-attractions" class="tabpanel" role="tabpanel" aria-labelledby="tabbtn-attractions" data-active="true">
-          <div class="grid cols-3" style="margin-top: var(--gap-3)">
-            <div class="card"><h3>Patras Castle</h3><p>Medieval fortress with stunning panoramic views of the city and sea</p></div>
-            <div class="card"><h3>Roman Odeon</h3><p>Ancient theater where you can still catch modern performances</p></div>
-            <div class="card"><h3>St. Andrew Church</h3><p>Magnificent cathedral and spiritual heart of the city</p></div>
-            <div class="card"><h3>Marina & Waterfront</h3><p>Perfect for sunset walks with cafes and sea breeze</p></div>
-            <div class="card"><h3>Municipal Gallery</h3><p>Local art and rotating exhibitions in beautiful building</p></div>
-            <div class="card"><h3>Carnival Heritage</h3><p>Europe's largest carnival tradition (February‑March)</p></div>
-          </div>
-        </div>
-
-        <div id="tab-food" class="tabpanel" role="tabpanel" aria-labelledby="tabbtn-food" data-active="false">
-          <div class="grid cols-2" style="margin-top: var(--gap-3)">
-            <div class="card"><h3>Traditional Greek</h3><p><strong>Taverna Dionysos</strong> • Authentic mezze & grills • 5‑min walk<br><strong>Akti Seafood</strong> • Fresh fish by the harbor • Waterfront views</p></div>
-            <div class="card"><h3>Coffee Culture</h3><p><strong>Coffee Island</strong> • Premium coffee chain • Multiple locations<br><strong>Café Central</strong> • Historic café with local charm</p></div>
-            <div class="card"><h3>International Flavors</h3><p><strong>Pizza Fan</strong> • Reliable delivery • Greek‑style pizza<br><strong>Buddha Bar</strong> • Asian fusion • Modern vibe</p></div>
-            <div class="card"><h3>Nightlife Scene</h3><p><strong>Plateia Georgiou</strong> • Bar hopping central<br><strong>Riga Fereos</strong> • Student‑friendly clubs & bars</p></div>
-          </div>
-        </div>
-
-        <div id="tab-practical" class="tabpanel" role="tabpanel" aria-labelledby="tabbtn-practical" data-active="false">
-          <div class="grid cols-2" style="margin-top: var(--gap-3)">
-            <div class="card"><h3>Shopping</h3><p><strong>Sklavenitis</strong> — 3‑min walk<br><strong>AB Vassilopoulos</strong> — 5‑min walk<br><strong>Lidl</strong> — Budget option, 10‑min<br><strong>Open till 9 PM most days</strong></p></div>
-            <div class="card"><h3>Health & Pharmacy</h3><p><strong>Farmakeio Central</strong><br>Open until 9 PM • 2‑min walk<br><em>Look for green cross sign</em></p></div>
-            <div class="card"><h3>Money & Banking</h3><p><strong>Eurobank ATM</strong> — Corner location<br><strong>National Bank</strong> — Downtown<br>Most international cards work</p></div>
-            <div class="card"><h3>Stay Connected</h3><p><strong>Cosmote Store</strong> — Tourist SIMs<br><strong>Free Wi‑Fi</strong> at most cafés<br><strong>WhatsApp</strong> works great</p></div>
-          </div>
-        </div>
-
-        <div id="tab-transport" class="tabpanel" role="tabpanel" aria-labelledby="tabbtn-transport" data-active="false">
-          <div class="grid cols-2" style="margin-top: var(--gap-3)">
-            <div class="card"><h3>Transport Tips</h3><p>Use taxis or local buses; the city center is very walkable.</p></div>
+      <div class="grid cards-2">
+        <div class="card weather-card">
+          <h3 class="muted" data-i18n="weather.summaryLabel">Current</h3>
+          <div class="info-list">
+            <div class="info-item"><span class="info-label" data-i18n="weather.tempLabel">Temperature</span><span class="info-val temp">—</span></div>
+            <div class="info-item"><span class="info-label" data-i18n="weather.condLabel">Conditions</span><span class="info-val weather-meta line">—</span></div>
+            <div class="info-item"><span class="info-label" data-i18n="weather.sunset">Sunset</span><span class="info-val weather-meta sunset">—</span></div>
+            <div class="info-item"><span class="info-label" data-i18n="weather.sunrise">Sunrise</span><span class="info-val weather-meta sunrise">—</span></div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Contact -->
-    <section class="block" aria-labelledby="contact-title">
-      <h2 id="contact-title"><span class="dot" aria-hidden="true"></span><span data-i18n="contact.title">Need anything?</span></h2>
-      <p class="meta" data-i18n="contact.subtitle">Contact your host anytime.</p>
-      <div class="contact" style="margin-top: var(--gap-3)">
-        <div class="row"><span class="icon-muted" aria-hidden="true">📞</span>+30 2610 000000</div>
-        <div class="row"><span class="icon-muted" aria-hidden="true">✉️</span>host@example.com</div>
+  <!-- Discover -->
+  <section id="discover" class="section fade-in">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" data-i18n="discover.title">Discover Patras</h2>
+        <p class="section-sub muted" data-i18n="discover.sub">Must-see spots, food, and essentials.</p>
       </div>
-    </section>
-  </main>
 
-  <footer></footer>
+      <div class="tablist" role="tablist" aria-label="Discover">
+        <button role="tab" aria-selected="true" aria-controls="tab-attractions" id="tabbtn-attractions" data-i18n="tabs.mustsee">Must-See</button>
+        <button role="tab" aria-selected="false" aria-controls="tab-food" id="tabbtn-food" data-i18n="tabs.food">Food & Drinks</button>
+        <button role="tab" aria-selected="false" aria-controls="tab-practical" id="tabbtn-practical" data-i18n="tabs.practical">Essentials</button>
+        <button role="tab" aria-selected="false" aria-controls="tab-transport" id="tabbtn-transport" data-i18n="tabs.transport">Getting Around</button>
+      </div>
+
+      <div id="tab-attractions" class="tabpanel" role="tabpanel" aria-labelledby="tabbtn-attractions" data-active="true">
+        <div class="grid cards-3">
+          <div class="card"><h3>Patras Castle</h3><p class="muted">Medieval fortress with panoramic views</p></div>
+          <div class="card"><h3>Roman Odeon</h3><p class="muted">Ancient theater still hosting shows</p></div>
+          <div class="card"><h3>St. Andrew Church</h3><p class="muted">Magnificent cathedral</p></div>
+          <div class="card"><h3>Marina & Waterfront</h3><p class="muted">Cafes + sunset walks</p></div>
+          <div class="card"><h3>Municipal Gallery</h3><p class="muted">Local art & rotating exhibits</p></div>
+          <div class="card"><h3>Carnival Heritage</h3><p class="muted">Europe's largest carnival (Feb–Mar)</p></div>
+        </div>
+      </div>
+
+      <div id="tab-food" class="tabpanel" role="tabpanel" aria-labelledby="tabbtn-food" data-active="false">
+        <div class="grid cards-2">
+          <div class="card"><h3>Traditional Greek</h3><p class="muted"><strong>Taverna Dionysos</strong> • Mezze & grills • 5-min walk<br><strong>Akti Seafood</strong> • Fresh fish • Harbor views</p></div>
+          <div class="card"><h3>Coffee Culture</h3><p class="muted"><strong>Coffee Island</strong> • Multiple locations<br><strong>Café Central</strong> • Historic vibe</p></div>
+          <div class="card"><h3>International</h3><p class="muted"><strong>Pizza Fan</strong> • Delivery<br><strong>Buddha Bar</strong> • Asian-fusion</p></div>
+          <div class="card"><h3>Nightlife</h3><p class="muted"><strong>Plateia Georgiou</strong> • Bars<br><strong>Riga Fereos</strong> • Clubs</p></div>
+        </div>
+      </div>
+
+      <div id="tab-practical" class="tabpanel" role="tabpanel" aria-labelledby="tabbtn-practical" data-active="false">
+        <div class="grid cards-2">
+          <div class="card"><h3>Shopping</h3><p class="muted"><strong>Sklavenitis</strong> 3-min • <strong>AB</strong> 5-min • <strong>Lidl</strong> 10-min</p></div>
+          <div class="card"><h3>Pharmacy</h3><p class="muted">Open till 9 PM • 2-min walk</p></div>
+          <div class="card"><h3>Banking</h3><p class="muted">Eurobank ATM (corner) • National Bank downtown</p></div>
+          <div class="card"><h3>Connectivity</h3><p class="muted">Cosmote tourist SIMs • Cafés with Wi-Fi</p></div>
+        </div>
+      </div>
+
+      <div id="tab-transport" class="tabpanel" role="tabpanel" aria-labelledby="tabbtn-transport" data-active="false">
+        <div class="grid cards-2">
+          <div class="card"><h3>Transport Tips</h3><p class="muted">Walkable center • Taxis & local buses for longer hops</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Emergency -->
+  <section id="emergency" class="section fade-in">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" data-i18n="emergency.title">Emergency Contacts</h2>
+        <p class="section-sub muted" data-i18n="emergency.sub">Quick numbers you may need.</p>
+      </div>
+
+      <div class="emergency">
+        <div class="em-grid">
+          <div class="em-item"><div class="muted" data-i18n="emergency.emergency">Emergency</div><div class="em-num">112</div></div>
+          <div class="em-item"><div class="muted" data-i18n="emergency.police">Police</div><div class="em-num">100</div></div>
+          <div class="em-item"><div class="muted" data-i18n="emergency.fire">Fire Dept</div><div class="em-num">199</div></div>
+          <div class="em-item">
+            <div class="muted" data-i18n="emergency.hospital">Hospital</div>
+            <div class="em-num" data-i18n="emergency.hospitalDesc">University Hospital<br><strong>2613 603 000</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="section fade-in">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" data-i18n="contact.title">Need anything?</h2>
+        <p class="section-sub muted" data-i18n="contact.subtitle">Contact your host anytime.</p>
+      </div>
+      <div class="grid cards-2">
+        <div class="card"><h3>Phone</h3><p class="muted">+30 2610 000000</p></div>
+        <div class="card"><h3>Email</h3><p class="muted">host@example.com</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">© <span id="y"></span> Zoufis cozy living • Patras</div>
+    </div>
+  </footer>
 
   <script>
-    // ----------------- i18n -----------------
+    // ===== i18n =====
     const i18n = {
       en: {
-        hero: { title: 'Welcome to Patras', subtitle: 'Your digital concierge for an unforgettable Greek experience', location: 'Patras, Western Greece' },
-        emergency: { title: 'Emergency Contacts', emergency: 'Emergency', police: 'Police', fire: 'Fire Dept', hospital: 'Hospital', hospitalDesc: 'University Hospital<br><strong>2613 603 000</strong>' },
-        // apt: { title: 'Apartment Essentials', wifiLabel: 'WiFi Password:', access: 'Access', rules: 'House Rules', accessDesc: '<strong>Check-in:</strong> After 3:00 PM<br><strong>Check-out:</strong> Before 11:00 AM<br><strong>Lockbox Code:</strong> 1234', rulesDesc: '<strong>Quiet hours:</strong> 10 PM - 8 AM<br><strong>No smoking</strong> inside<br><strong>Max guests:</strong> 4 people' },
-        weather: { title: "Today's Weather", line: 'Partly Cloudy • Perfect for exploring!', sun: 'Sunset: 8:15 PM • Sunrise: 6:30 AM' },
-        discover: { title: 'Discover Patras' },
-        tabs: { mustsee: 'Must‑See', food: 'Food & Drinks', practical: 'Essentials', transport: 'Getting Around' },
-        contact: { title: 'Need anything?', subtitle: 'Contact your host anytime.' }
+        hero:{ title:'Welcome to Patras', subtitle:'Your digital concierge for an unforgettable Greek experience', location:'Patras, Western Greece' },
+        nav:{ essentials:'Essentials', weather:'Weather', discover:'Discover', emergency:'Emergency', contact:'Contact' },
+        apt:{ title:'Apartment Essentials', sub:'Key info for a smooth stay.', access:'Access',
+              accessDesc:'<strong>Check-in:</strong> After 3:00 PM<br><strong>Check-out:</strong> Before 11:00 AM<br><strong>Lockbox Code:</strong> 1234',
+              rules:'House Rules', ruleQuiet:'Quiet hours', ruleSmoke:'Smoking', ruleGuests:'Max guests' },
+        weather:{ title:"Today's Weather", sub:'Live conditions for Patras.', summaryLabel:'Current',
+                  tempLabel:'Temperature', condLabel:'Conditions', sunrise:'Sunrise', sunset:'Sunset' },
+        discover:{ title:'Discover Patras', sub:'Must-see spots, food, and essentials.' },
+        tabs:{ mustsee:'Must-See', food:'Food & Drinks', practical:'Essentials', transport:'Getting Around' },
+        emergency:{ title:'Emergency Contacts', sub:'Quick numbers you may need.',
+                    emergency:'Emergency', police:'Police', fire:'Fire Dept', hospital:'Hospital',
+                    hospitalDesc:'University Hospital<br><strong>2613 603 000</strong>' },
+        contact:{ title:'Need anything?', subtitle:'Contact your host anytime.' }
       },
       gr: {
-        hero: { title: 'Καλώς ήρθατε στην Πάτρα', subtitle: 'Η διαμονή σας, στην εντέλεια', location: 'Πάτρα, Δυτική Ελλάδα' },
-        emergency: { title: 'Έκτακτα Τηλέφωνα', emergency: 'Έκτακτη Ανάγκη', police: 'Αστυνομία', fire: 'Πυροσβεστική', hospital: 'Νοσοκομείο', hospitalDesc: 'Πανεπιστημιακό Νοσοκομείο<br><strong>2613 603 000</strong>' },
-        apt: { title: 'Βασικές Πληροφορίες Διαμερίσματος', wifiLabel: 'Κωδικός Wi‑Fi:', access: 'Πρόσβαση', rules: 'Κανόνες Σπιτιού', accessDesc: '<strong>Άφιξη:</strong> Μετά τις 15:00<br><strong>Αναχώρηση:</strong> Πριν τις 11:00<br><strong>Κωδικός θυρίδας:</strong> 1234', rulesDesc: '<strong>Ώρες κοινής ησυχίας:</strong> 22:00 - 08:00<br><strong>Απαγορεύεται το κάπνισμα</strong> μέσα<br><strong>Μέγιστος αριθμός φιλοξενουμένων:</strong> 4 άτομα' },
-        weather: { title: 'Ο καιρός σήμερα', line: 'Μερική συννεφιά • Ιδανικό για βόλτα!', sun: 'Ηλιοβασίλεμα: 8:15 μ.μ. • Ανατολή: 6:30 π.μ.' },
-        discover: { title: 'Ανακαλύψτε την Πάτρα' },
-        tabs: { mustsee: 'Αξίζει να δείτε', food: 'Φαγητό & Ποτά', practical: 'Πρακτικά', transport: 'Μετακινήσεις' },
-        contact: { title: 'Χρειάζεστε κάτι;', subtitle: 'Επικοινωνήστε με τον οικοδεσπότη ανά πάσα στιγμή.' }
+        hero:{ title:'Καλώς ήρθατε στην Πάτρα', subtitle:'Η διαμονή σας, στην εντέλεια', location:'Πάτρα, Δυτική Ελλάδα' },
+        nav:{ essentials:'Βασικά', weather:'Καιρός', discover:'Ανακαλύψτε', emergency:'Έκτακτα', contact:'Επικοινωνία' },
+        apt:{ title:'Βασικές Πληροφορίες Διαμερίσματος', sub:'Ό,τι χρειάζεστε για άνετη διαμονή.',
+              access:'Πρόσβαση',
+              accessDesc:'<strong>Άφιξη:</strong> Μετά τις 15:00<br><strong>Αναχώρηση:</strong> Πριν τις 11:00<br><strong>Κωδικός θυρίδας:</strong> 1234',
+              rules:'Κανόνες Σπιτιού', ruleQuiet:'Ώρες ησυχίας', ruleSmoke:'Κάπνισμα', ruleGuests:'Μέγιστοι φιλοξενούμενοι' },
+        weather:{ title:'Ο καιρός σήμερα', sub:'Ζωντανές συνθήκες για την Πάτρα.',
+                  summaryLabel:'Τώρα', tempLabel:'Θερμοκρασία', condLabel:'Συνθήκες', sunrise:'Ανατολή', sunset:'Ηλιοβασίλεμα' },
+        discover:{ title:'Ανακαλύψτε την Πάτρα', sub:'Αξιοθέατα, φαγητό και πρακτικά.' },
+        tabs:{ mustsee:'Αξίζει να δείτε', food:'Φαγητό & Ποτά', practical:'Πρακτικά', transport:'Μετακινήσεις' },
+        emergency:{ title:'Έκτακτα Τηλέφωνα', sub:'Χρήσιμοι αριθμοί.',
+                    emergency:'Έκτακτη ανάγκη', police:'Αστυνομία', fire:'Πυροσβεστική', hospital:'Νοσοκομείο',
+                    hospitalDesc:'Πανεπιστημιακό Νοσοκομείο<br><strong>2613 603 000</strong>' },
+        contact:{ title:'Χρειάζεστε κάτι;', subtitle:'Επικοινωνήστε με τον οικοδεσπότη.' }
       }
     };
-    // ----------------- Weather (Open‑Meteo) -----------------
-    const WEATHER_TTL_MS = 30 * 60 * 1000; // 30 minutes
-    const WEATHER_KEY = 'patras_weather_payload';
-    let lastWeather = null;
+    const dictGet=(o,p)=>p.split('.').reduce((a,k)=>(a||{})[k],o);
 
-    const WEATHER_LABELS = {
-      en: {
-        clear: 'Clear', partly: 'Partly cloudy', fog: 'Fog', drizzle: 'Drizzle', rain: 'Rain', snow: 'Snow', showers: 'Showers', snow_sh: 'Snow showers', thunder: 'Thunderstorm', hail: 'Thunderstorm with hail',
-        sunrise: 'Sunrise', sunset: 'Sunset'
-      },
-      gr: {
-        clear: 'Αίθριος', partly: 'Μερική συννεφιά', fog: 'Ομίχλη', drizzle: 'Ψιχάλες', rain: 'Βροχή', snow: 'Χιόνι', showers: 'Μπόρες', snow_sh: 'Μπόρες χιονιού', thunder: 'Καταιγίδα', hail: 'Καταιγίδα με χαλάζι',
-        sunrise: 'Ανατολή', sunset: 'Ηλιοβασίλεμα'
-      }
+    // ===== Weather (Open-Meteo) =====
+    const WEATHER_TTL_MS=30*60*1000, WEATHER_KEY='patras_weather_payload';
+    const WEATHER_LABELS={
+      en:{ clear:'Clear', partly:'Partly cloudy', fog:'Fog', drizzle:'Drizzle', rain:'Rain', snow:'Snow', showers:'Showers', snow_sh:'Snow showers', thunder:'Thunderstorm', hail:'Thunder w/ hail' },
+      gr:{ clear:'Αίθριος', partly:'Μερική συννεφιά', fog:'Ομίχλη', drizzle:'Ψιχάλες', rain:'Βροχή', snow:'Χιόνι', showers:'Μπόρες', snow_sh:'Μπόρες χιονιού', thunder:'Καταιγίδα', hail:'Καταιγίδα με χαλάζι' }
     };
-
-    function bucketFromCode(code){
-      if (code === 0) return 'clear';
-      if (code >= 1 && code <= 3) return 'partly';
-      if (code === 45 || code === 48) return 'fog';
-      if (code >= 51 && code <= 57) return 'drizzle';
-      if (code >= 61 && code <= 67) return 'rain';
-      if (code >= 71 && code <= 77) return 'snow';
-      if (code >= 80 && code <= 82) return 'showers';
-      if (code >= 85 && code <= 86) return 'snow_sh';
-      if (code === 95) return 'thunder';
-      if (code === 96 || code === 99) return 'hail';
-      return 'partly';
+    function bucketFromCode(c){ if(c===0)return'clear'; if(c>=1&&c<=3)return'partly'; if(c===45||c===48)return'fog';
+      if(c>=51&&c<=57)return'drizzle'; if(c>=61&&c<=67)return'rain'; if(c>=71&&c<=77)return'snow';
+      if(c>=80&&c<=82)return'showers'; if(c>=85&&c<=86)return'snow_sh'; if(c===95)return'thunder'; if(c===96||c===99)return'hail'; return'partly';}
+    const fmt=(iso,lang)=>new Intl.DateTimeFormat(lang==='gr'?'el-GR':'en-GB',{hour:'2-digit',minute:'2-digit'}).format(new Date(iso));
+    function renderWeather(data,lang){
+      const tempEl=document.querySelector('.temp'), lineEl=document.querySelector('.line'), sset=document.querySelector('.sunset'), srise=document.querySelector('.sunrise');
+      if(!tempEl||!lineEl||!sset||!srise) return;
+      if(!data){ tempEl.textContent=lineEl.textContent=sset.textContent=srise.textContent='—'; return; }
+      const labels=WEATHER_LABELS[lang]||WEATHER_LABELS.en, bucket=bucketFromCode(Number(data.code));
+      tempEl.textContent=Math.round(Number(data.temp))+'°C';
+      lineEl.textContent=labels[bucket]||'';
+      sset.textContent=fmt(data.sunset,lang);
+      srise.textContent=fmt(data.sunrise,lang);
     }
-
-    function fmtTime(iso, lang){
-      const d = new Date(iso);
-      const locale = lang === 'gr' ? 'el-GR' : 'en-GB';
-      return new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(d);
-    }
-
-    function renderWeather(data, lang){
-      const tempEl = document.querySelector('.weather .temp');
-      const lineEl = document.querySelector('[data-i18n="weather.line"]');
-      const sunEl  = document.querySelector('[data-i18n="weather.sun"]');
-      if (!tempEl || !lineEl || !sunEl) return;
-      if (!data) { tempEl.textContent = '—'; lineEl.textContent = '—'; sunEl.textContent = '—'; return; }
-      const labels = WEATHER_LABELS[lang] || WEATHER_LABELS.en;
-      const bucket = bucketFromCode(Number(data.code));
-      tempEl.textContent = Math.round(Number(data.temp)) + '°C';
-      lineEl.textContent = labels[bucket] || '';
-      sunEl.textContent = `${labels.sunset}: ${fmtTime(data.sunset, lang)} • ${labels.sunrise}: ${fmtTime(data.sunrise, lang)}`;
-    }
-
     async function fetchWeather(){
-      const url = 'https://api.open-meteo.com/v1/forecast?latitude=38.2466&longitude=21.7346&current_weather=true&daily=sunrise,sunset&timezone=Europe%2FAthens&forecast_days=1';
-      const res = await fetch(url, { cache: 'no-store' });
-      if (!res.ok) throw new Error('Network');
-      const json = await res.json();
-      return {
-        temp: json.current_weather?.temperature,
-        code: json.current_weather?.weathercode,
-        sunrise: json.daily?.sunrise?.[0],
-        sunset: json.daily?.sunset?.[0]
-      };
+      const url='https://api.open-meteo.com/v1/forecast?latitude=38.2466&longitude=21.7346&current_weather=true&daily=sunrise,sunset&timezone=Europe%2FAthens&forecast_days=1';
+      const res=await fetch(url,{cache:'no-store'}); if(!res.ok) throw new Error('net');
+      const j=await res.json();
+      return { temp:j.current_weather?.temperature, code:j.current_weather?.weathercode, sunrise:j.daily?.sunrise?.[0], sunset:j.daily?.sunset?.[0] };
     }
-
     async function loadWeather(){
-      // try cache first
-      const now = Date.now();
-      try {
-        const cached = JSON.parse(localStorage.getItem(WEATHER_KEY) || 'null');
-        if (cached && (now - cached.ts) < WEATHER_TTL_MS) {
-          lastWeather = cached.data;
-          renderWeather(lastWeather, currentLang());
-        }
-      } catch {}
-      // fetch fresh
-      try {
-        const data = await fetchWeather();
-        if (data && data.temp != null) {
-          lastWeather = data;
-          localStorage.setItem(WEATHER_KEY, JSON.stringify({ ts: now, data }));
-          renderWeather(lastWeather, currentLang());
-        }
-      } catch (e) {
-        // keep cached render if available
-        if (!lastWeather) renderWeather(null, currentLang());
-      }
+      const now=Date.now(); try{ const cached=JSON.parse(localStorage.getItem(WEATHER_KEY)||'null');
+        if(cached&&(now-cached.ts)<WEATHER_TTL_MS){ renderWeather(cached.data,currentLang()); } }catch{}
+      try{ const data=await fetchWeather(); localStorage.setItem(WEATHER_KEY,JSON.stringify({ts:now,data})); renderWeather(data,currentLang()); }catch(e){/* ignore */}
     }
 
-    const dictGet = (obj, path) => path.split('.').reduce((o,k)=> (o||{})[k], obj);
-
-    function currentLang(){
-      return localStorage.getItem('patras_lang') || (navigator.language && navigator.language.startsWith('el') ? 'gr' : 'en');
-    }
-
+    // ===== Language handling =====
+    function currentLang(){ return localStorage.getItem('patras_lang') || (navigator.language?.startsWith('el')?'gr':'en'); }
     function translate(lang){
-      document.documentElement.lang = (lang === 'gr') ? 'el' : 'en';
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        const val = dictGet(i18n[lang], key);
-        if (typeof val === 'string') el.innerHTML = val;
-      });
-      // Tabs labels
-      const tl = i18n[lang].tabs;
-      if (tl){
-        document.getElementById('tabbtn-attractions').textContent = tl.mustsee;
-        document.getElementById('tabbtn-food').textContent = tl.food;
-        document.getElementById('tabbtn-practical').textContent = tl.practical;
-        document.getElementById('tabbtn-transport').textContent = tl.transport;
-      }
-      // Segmented toggle state
-      document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.setLang === lang)));
+      document.documentElement.lang=(lang==='gr')?'el':'en';
+      document.querySelectorAll('[data-i18n]').forEach(el=>{ const v=dictGet(i18n[lang], el.getAttribute('data-i18n')); if(typeof v==='string') el.innerHTML=v; });
+      document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.setLang===lang)));
+      const cached=JSON.parse(localStorage.getItem(WEATHER_KEY)||'null'); renderWeather(cached?.data, lang);
       localStorage.setItem('patras_lang', lang);
-      // re-render dynamic weather text in the new language
-      renderWeather(lastWeather, lang);
     }
+    document.addEventListener('click',e=>{ const b=e.target.closest('.lang button'); if(!b) return; translate(b.dataset.setLang); });
 
-    // Segmented language switch
-    document.addEventListener('click', (e)=>{
-      const b = e.target.closest('.seg button');
-      if(!b) return;
-      translate(b.dataset.setLang);
-    });
+    // Tabs
+    const tabButtons=Array.from(document.querySelectorAll('.tablist [role="tab"]'));
+    const tabPanels =Array.from(document.querySelectorAll('.tabpanel'));
+    function setActiveTab(id){ tabButtons.forEach(btn=>btn.setAttribute('aria-selected', String(btn.id==='tabbtn-'+id)));
+      tabPanels.forEach(p=>p.dataset.active=String(p.id==='tab-'+id)); }
+    tabButtons.forEach(btn=>btn.addEventListener('click',()=>setActiveTab(btn.id.replace('tabbtn-',''))));
 
-    // Tabs: click + keyboard
-    const tabButtons = Array.from(document.querySelectorAll('.tablist [role="tab"]'));
-    const tabPanels  = Array.from(document.querySelectorAll('.tabpanel'));
-    function setActiveTab(id){
-      tabButtons.forEach(btn => btn.setAttribute('aria-selected', String(btn.id === 'tabbtn-' + id)));
-      tabPanels.forEach(p => p.dataset.active = String(p.id === 'tab-' + id));
-    }
-    tabButtons.forEach(btn => btn.addEventListener('click', () => setActiveTab(btn.id.replace('tabbtn-',''))));
-    document.querySelector('.tablist').addEventListener('keydown', (e)=>{
-      const i = tabButtons.indexOf(document.activeElement);
-      if (i < 0) return;
-      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft'){
-        e.preventDefault();
-        const dir = e.key === 'ArrowRight' ? 1 : -1;
-        const next = (i + dir + tabButtons.length) % tabButtons.length;
-        tabButtons[next].focus();
-        tabButtons[next].click();
-      }
-    });
+    // Reveal on scroll
+    const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('visible')), {threshold:.12});
+    document.querySelectorAll('.fade-in').forEach(el=>io.observe(el));
 
-    // Init language & weather
-    const stored = localStorage.getItem('patras_lang');
-    const initLang = stored || (navigator.language && navigator.language.startsWith('el') ? 'gr' : 'en');
-    translate(initLang);
+    // Init
+    document.getElementById('y').textContent=new Date().getFullYear();
+    translate(currentLang());
     loadWeather();
   </script>
 </body>
