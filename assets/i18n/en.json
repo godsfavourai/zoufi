@@ -1,0 +1,56 @@
+{
+    "hero": {
+        "title": "Welcome to Patras",
+        "subtitle": "Your digital concierge for an unforgettable Greek experience",
+        "location": "Patras, Western Greece"
+    },
+    "nav": {
+        "essentials": "Essentials",
+        "weather": "Weather",
+        "discover": "Discover",
+        "emergency": "Emergency",
+        "contact": "Contact"
+    },
+    "apt": {
+        "title": "Apartment Essentials",
+        "sub": "Key info for a smooth stay.",
+        "access": "Access",
+        "accessDesc": "<strong>Check-in:</strong> After 3:00 PM<br><strong>Check-out:</strong> Before 11:00 AM<br><strong>Lockbox Code:</strong> 1234",
+        "rules": "House Rules",
+        "ruleQuiet": "Quiet hours",
+        "ruleSmoke": "Smoking",
+        "ruleGuests": "Max guests"
+    },
+    "weather": {
+        "title": "Today's Weather",
+        "sub": "Live conditions for Patras.",
+        "summaryLabel": "Current",
+        "tempLabel": "Temperature",
+        "condLabel": "Conditions",
+        "sunrise": "Sunrise",
+        "sunset": "Sunset"
+    },
+    "discover": {
+        "title": "Discover Patras",
+        "sub": "Must-see spots, food, and essentials."
+    },
+    "tabs": {
+        "mustsee": "Must-See",
+        "food": "Food & Drinks",
+        "practical": "Essentials",
+        "transport": "Getting Around"
+    },
+    "emergency": {
+        "title": "Emergency Contacts",
+        "sub": "Quick numbers you may need.",
+        "emergency": "Emergency",
+        "police": "Police",
+        "fire": "Fire Dept",
+        "hospital": "Hospital",
+        "hospitalDesc": "University Hospital<br><strong>2613 603 000</strong>"
+    },
+    "contact": {
+        "title": "Need anything?",
+        "subtitle": "Contact your host anytime."
+    }
+}

@@ -1,0 +1,51 @@
+/* ================= BASE.CSS (light theme) ================= */
+
+/* Reset */
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  /* Brand & palette (calm boutique) */
+  --accent:#C7A66B;           /* brass */
+  --accent-ink:#6E582F;
+
+  --bg:#ffffff;
+  --bg-subtle:#faf9f7;
+  --ink:#1c1c1c;
+  --muted:#6b7280;
+
+  --border:#e8e5e1;
+  --hair:#efedea;
+
+  /* Shadows */
+  --shadow-sm:0 6px 14px rgba(0,0,0,.06);
+  --shadow-md:0 12px 24px rgba(0,0,0,.08);
+  --shadow-lg:0 22px 40px rgba(0,0,0,.10);
+
+  /* Radii */
+  --r-sm:10px; --r-md:14px; --r-lg:18px; --r-xl:22px;
+
+  /* Spacing */
+  --space-xs:8px; --space-sm:14px; --space-md:20px; --space-lg:28px; --space-xl:40px; --space-2xl:56px;
+
+  /* Type */
+  --display:'Playfair Display', ui-serif, Georgia, serif;
+  --text:'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+body {
+  font-family:var(--text);
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.7;
+  min-height:100vh;
+  overflow-x:hidden;
+  font-size:16px;
+}
+
+/* Typography */
+h1,h2,h3,h4,h5,h6 { font-weight:700; color:var(--ink); }
+p { margin-bottom:var(--space-sm); }
+
+/* Utilities */
+.muted { color:var(--muted); font-size:.95rem; }
+.container { max-width:1180px; margin:0 auto; padding:0 var(--space-md); }
